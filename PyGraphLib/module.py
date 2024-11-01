@@ -38,7 +38,8 @@ class Graph:
     def __init__(self, graph: dict = {}, v: set = set(), e: set = set()) -> None:
         # detect graph type
         if graph != {} and type(graph[list(graph.keys())[0]]) is list:
-            self.graph = {k: {v[0]: v[1] for v in graph[k]} for k in graph}
+            # "A": [("B", 1), ("C", 2)],
+            self.graph = {k: {v[0]: [v[1]] for v in graph[k]} for k in graph}
         elif graph != {} and type(graph[list(graph.keys())[0]]) is dict:
             self.graph = graph
         elif v != set() and e != set() and type(v) is set and type(e) is set:
@@ -46,7 +47,7 @@ class Graph:
             self.graph = {vertex: {} for vertex in v}
             for edge in e:
                 start, end, weight = edge if len(edge) == 3 else (*edge, 1)
-                self.graph[start][end] = weight
+                self.graph[start][end] = [weight]
         else:
             self.graph = {}
 
@@ -348,3 +349,12 @@ class Graph:
                     ]
 
         return new_graph.hierholzner()
+    
+if __name__ == "__main__":
+    graph_data = {
+        "A": [("B", 1), ("C", 2)],
+        "B": [("A", 1), ("C", 3)],
+        "C": [("A", 2), ("B", 3)],
+    }
+    graph = Graph(graph=graph_data)
+    print(graph.graph)

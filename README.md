@@ -20,4 +20,8 @@ pip install pygraphlib
 
 ```python
 from pygraphlib import Graph
-```	
+```
+
+## Testing
+
+To run the tests, navigate to the `tests` directory and execute:
