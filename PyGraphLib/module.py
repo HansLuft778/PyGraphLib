@@ -342,7 +342,7 @@ class Graph:
 
         return path
 
-    def chinese_postman(self) -> list[str]:
+    def chinese_postman(self, start = "") -> list[str]:
         # get odd nodes
         odd_nodes: list[str] = []
         for node in self.graph:
@@ -374,7 +374,7 @@ class Graph:
                         new_graph.graph[path[node_idx]][path[node_idx + 1]][0],
                     ]
 
-        return new_graph.hierholzner()
+        return new_graph.hierholzner(start)
     
 if __name__ == "__main__":
     graph_data = {
