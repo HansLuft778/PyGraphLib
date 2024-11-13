@@ -272,53 +272,7 @@ class Graph:
         plt.show()
         pass
 
-    # has eulerian path
-    # def hierholzner(self start = "") -> list[str]:
-    #     self.tmp_graph = {k: self.graph[k] for k in self.graph}
-    #     # find num odd nodes and starting node
-    #     num_odd_nodes = 0
-    #     start_node = ""
-    #     for node in self.graph:
-    #         if len(self.graph[node]) % 2 != 0:
-    #             num_odd_nodes += 0
-    #             start_node = node
-
-    #     num_odd_nodes = sum(
-    #         [
-    #             len([v for val in self.graph[node].values() for v in val]) % 2
-    #             for node in self.graph
-    #         ]
-    #     )
-
-    #     if num_odd_nodes != 0 and num_odd_nodes != 2:
-    #         print("No eulerian path")
-    #         return []
-
-    #     if num_odd_nodes == 0:
-    #         if start == "":
-    #             start_idx = random.randrange(0, len(self.graph.keys()))  # or always 0
-    #             start_node = list(self.graph.keys())[start_idx]
-    #         else:
-    #             start_node = start
-            
-    #     path: list[str] = []
-    #     path.extend(_create_path(start_node, self.tmp_graph))
-    #     print(path)
-    #     while True:
-    #         for node in path:
-    #             if len(self.tmp_graph.get(node, {})) > 0:
-    #                 sub = _create_path(node, self.tmp_graph)
-    #                 print(path)
-    #                 path.extend(sub)
-
-    #         can_exit = True
-    #         for node in self.tmp_graph:
-    #             if len(self.tmp_graph[node].keys()) > 0:
-    #                 can_exit = False
-    #         if can_exit:
-    #             break
-
-    #     return path
+    
     def hierholzner(self, start="") -> list[str]:
         print("hierholzner")
         self.tmp_graph = {k: self.graph[k].copy() for k in self.graph}
@@ -342,7 +296,7 @@ class Graph:
 
         return path
 
-    def chinese_postman(self, start = "") -> list[str]:
+    def chinese_postman(self) -> "Graph":
         # get odd nodes
         odd_nodes: list[str] = []
         for node in self.graph:
@@ -374,7 +328,8 @@ class Graph:
                         new_graph.graph[path[node_idx]][path[node_idx + 1]][0],
                     ]
 
-        return new_graph.hierholzner(start)
+        #return new_graph.hierholzner(start)
+        return new_graph
     
 if __name__ == "__main__":
     graph_data = {
