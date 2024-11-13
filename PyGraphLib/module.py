@@ -273,26 +273,50 @@ class Graph:
         pass
 
     
-    def hierholzner(self, start="") -> list[str]:
-        print("hierholzner")
-        self.tmp_graph = {k: self.graph[k].copy() for k in self.graph}
+    def hierholzner(self, start = "") -> list[str]:
+        self.tmp_graph = {k: self.graph[k] for k in self.graph}
+        # find num odd nodes and starting node
+        num_odd_nodes = 0
+        start_node = ""
+        for node in self.graph:
+            if len(self.graph[node]) % 2 != 0:
+                num_odd_nodes += 0
+                start_node = node
 
-        odd_nodes = [node for node in self.graph if len(self.graph[node]) % 2 != 0]
-        if len(odd_nodes) not in [0, 2]:
+        num_odd_nodes = sum(
+            [
+                len([v for val in self.graph[node].values() for v in val]) % 2
+                for node in self.graph
+            ]
+        )
+
+        if num_odd_nodes != 0 and num_odd_nodes != 2:
             print("No eulerian path")
             return []
 
-        start_node = start or (odd_nodes[0] if odd_nodes else random.choice(list(self.graph.keys())))
+        if num_odd_nodes == 0:
+            if start == "":
+                start_idx = random.randrange(0, len(self.graph.keys()))  # or always 0
+                start_node = list(self.graph.keys())[start_idx]
+            else:
+                start_node = start
+            
+        path: list[str] = []
+        path.extend(_create_path(start_node, self.tmp_graph))
+        print(path)
+        while True:
+            for node in path:
+                if len(self.tmp_graph.get(node, {})) > 0:
+                    sub = _create_path(node, self.tmp_graph)
+                    print(path)
+                    path.extend(sub)
 
-        path = _create_path(start_node, self.tmp_graph)
-        i = 0
-        while i < len(path):
-            node = path[i]
-            if self.tmp_graph.get(node):
-                sub_path = _create_path(node, self.tmp_graph)
-                path = path[:i] + sub_path + path[i+1:]
-                i = -1
-            i += 1
+            can_exit = True
+            for node in self.tmp_graph:
+                if len(self.tmp_graph[node].keys()) > 0:
+                    can_exit = False
+            if can_exit:
+                break
 
         return path
 
